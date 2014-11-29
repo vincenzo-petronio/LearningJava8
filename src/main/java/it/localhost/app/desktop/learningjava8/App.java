@@ -39,6 +39,8 @@ public class App {
                     s.printNumbersFiltered(0);
                     s.printNumbersParallelFiltered(7);
                     s.printCarsPartitioned("f");
+                    s.printCitiesToUpperCase();
+                    s.printCitiesStringToPersonCollection();
                     break;
                 default:
                     break;

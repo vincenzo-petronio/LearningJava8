@@ -2,8 +2,10 @@ package it.localhost.app.desktop.learningjava8.tutorial;
 
 import it.localhost.app.desktop.learningjava8.common.Car;
 import it.localhost.app.desktop.learningjava8.common.FakeData;
+import it.localhost.app.desktop.learningjava8.common.Person;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -13,11 +15,15 @@ public class Streams extends ATutorial {
 
     private List<Integer> numbers = null;
     private List<Car> cars;
+    private List<String> cities;
+    private List<Person> persons;
     private StringBuilder sb = null;
 
     public Streams() {
         this.numbers = FakeData.getNumbers();
         this.cars = FakeData.getCars();
+        this.cities = FakeData.getCities();
+        this.persons = FakeData.getPersons();
     }
 
     public void printNumbersFiltered(int findme) {
@@ -86,4 +92,53 @@ public class Streams extends ATutorial {
         System.out.println(sb.toString());
     }
 
+    public void printCitiesToUpperCase() {
+        sb = new StringBuilder();
+        sb.append("### List of cities - Upper Case ###");
+        sb.append("\n");
+        sb.append("Before").append(": ");
+        sb.append(Arrays.deepToString(this.cities.toArray()));
+
+        sb.append("\n");
+        sb.append("Upper Case: ");
+
+        cities.stream()
+                // MAP, METHOD REFERENCE
+                // equivalent to .map(city -> city.toUpperCase())
+                .map(String::toUpperCase)
+                .forEach(city -> sb.append(city).append(", "));
+
+        sb.append("\n");
+        System.out.println(sb.toString());
+    }
+
+    public void printCitiesStringToPersonCollection() {
+        sb = new StringBuilder();
+        sb.append("### From List of cities String to List of Person object ###");
+        sb.append("\n");
+        sb.append("Before").append(": ");
+        sb.append(Arrays.deepToString(this.cities.toArray()));
+
+        sb.append("\n");
+        sb.append("To Person: ");
+
+        // MAP
+        cities.stream()
+                .map(s -> {
+            return new Person(
+                    this.persons.get(new Random().nextInt(this.persons.size())).getName(),
+                    new Random().nextInt(this.numbers.size()),
+                    this.cars.get(new Random().nextInt(this.cars.size())),
+                    s.toUpperCase());
+                })
+                .collect(Collectors.toList())
+                .forEach(p -> sb.append(p.getName())
+                        .append(" ").append(p.getAge())
+                        .append(" ").append(p.getCity())
+                        .append(" ").append(p.getCar().getName())
+                        .append(", "));
+
+        sb.append("\n");
+        System.out.println(sb.toString());
+    }
 }
